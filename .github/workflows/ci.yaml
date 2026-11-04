@@ -106,7 +106,7 @@ jobs:
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7.1.1
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && github.repository == 'adorsys/keycloak-config-cli'
         with:
           files: "${{ github.workspace }}/target/site/jacoco/jacoco.xml"
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -144,7 +144,7 @@ jobs:
         id: docker_meta
         uses: docker/metadata-action@v6.0.0
         with:
-          images: adorsys/keycloak-config-cli,quay.io/adorsys/keycloak-config-cli
+          images: krook1024/keycloak-config-cli,quay.io/krook1024/keycloak-config-cli
           flavor: |
             latest=${{ !contains(github.ref_name, 'rc') && matrix.env.KEYCLOAK_VERSION == steps.latest.outputs.VERSION }}
             suffix=-${{ matrix.env.KEYCLOAK_VERSION }}
@@ -290,15 +290,15 @@ jobs:
           body: |-
             # CHANGELOG
 
-            * https://github.com/adorsys/keycloak-config-cli/blob/${{ github.ref_name }}/CHANGELOG.md
+            * https://github.com/krook1024/keycloak-config-cli/blob/${{ github.ref_name }}/CHANGELOG.md
 
             ## DockerHub
 
-            * https://hub.docker.com/r/adorsys/keycloak-config-cli/tags?name=${{ steps.strip-v-tag.outputs.tag }}
+            * https://hub.docker.com/r/krook1024/keycloak-config-cli/tags?name=${{ steps.strip-v-tag.outputs.tag }}
 
             ## Quay.io
 
-            * https://quay.io/repository/adorsys/keycloak-config-cli?tab=tags
+            * https://quay.io/repository/krook1024/keycloak-config-cli?tab=tags
 
   publish-helm-chart:
     runs-on: ubuntu-latest
@@ -317,7 +317,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           charts_dir: contrib/charts
-          charts_url: https://adorsys.github.io/keycloak-config-cli/helm-charts
+          charts_url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/helm-charts
           branch: gh-pages
           target_dir: helm-charts
           index_dir: helm-charts
