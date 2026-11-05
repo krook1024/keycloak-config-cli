@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [6.5.5] - 2026-11-05
+
 ## [6.5.4] - 2026-11-05
 
 ## [6.5.3] - 2026-11-05
@@ -988,7 +990,8 @@ A lot of import properties are added over the years. this major release of keycl
 
 
 
-[Unreleased]: https://github.com/krook1024/keycloak-config-cli/compare/v6.5.4...HEAD
+[Unreleased]: https://github.com/krook1024/keycloak-config-cli/compare/v6.5.5...HEAD
+[6.5.5]: https://github.com/krook1024/keycloak-config-cli/compare/v6.5.4...v6.5.5
 [6.5.4]: https://github.com/krook1024/keycloak-config-cli/compare/v6.5.3...v6.5.4
 [6.5.3]: https://github.com/krook1024/keycloak-config-cli/compare/v6.5.2...v6.5.3
 [6.5.2]: https://github.com/krook1024/keycloak-config-cli/compare/v6.5.1...v6.5.2
