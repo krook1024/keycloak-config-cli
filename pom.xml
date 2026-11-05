@@ -14,7 +14,7 @@
     <version>6.5.2-SNAPSHOT</version>
 
     <name>keycloak-config-cli</name>
-    <url>https://github.com/adorsys/keycloak-config-cli</url>
+    <url>https://github.com/krook1024/keycloak-config-cli</url>
     <description>This tool is able to import JSON-formatted configuration files into Keycloak by using its REST
         interface.
     </description>
@@ -43,15 +43,15 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/adorsys/keycloak-config-cli.git</connection>
+        <connection>scm:git:git://github.com/krook1024/keycloak-config-cli.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/keycloak-config-cli.git</developerConnection>
-        <url>https://github.com/adorsys/keycloak-config-cli</url>
-        <tag>v6.5.0</tag>
+        <url>https://github.com/krook1024/keycloak-config-cli</url>
+        <tag>v6.5.2</tag>
     </scm>
 
     <issueManagement>
         <system>Github</system>
-        <url>https://github.com/adorsys/keycloak-config-cli/issues</url>
+        <url>https://github.com/krook1024/keycloak-config-cli/issues</url>
     </issueManagement>
 
     <properties>
@@ -106,10 +106,6 @@
         <logback.version>1.5.25</logback.version>
         <nimbus-jose-jwt.version>10.9.1</nimbus-jose-jwt.version>
         <rhino.version>1.8.1</rhino.version>
-
-        <sonar.projectKey>keycloak-config-cli</sonar.projectKey>
-        <sonar.organization>adorsys</sonar.organization>
-        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
         <release.signTag>true</release.signTag>
         <release.additionalArguments />
