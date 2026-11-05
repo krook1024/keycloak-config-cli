@@ -35,8 +35,13 @@ class ResteasyUtilTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
 
     private static String testKeystorePath() {
-        return Path.of(Objects.requireNonNull(
-                ResteasyUtilTest.class.getClassLoader().getResource("tls/test-keystore.p12")).getPath()).toString();
+        try {
+            return Path.of(Objects.requireNonNull(
+                    ResteasyUtilTest.class.getClassLoader().getResource("tls/test-keystore.p12")).toURI())
+                    .toString();
+        } catch (java.net.URISyntaxException e) {
+            throw new IllegalStateException("Invalid keystore resource URI", e);
+        }
     }
 
     @Test
