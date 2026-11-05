@@ -156,16 +156,15 @@ public class OrganizationRepository {
     }
 
     private List<OrganizationRepresentation> findAll(String realmName, int pageSize) {
-        List<OrganizationRepresentation> allOrganizations = new ArrayList<>(pageSize);
+        List<OrganizationRepresentation> allOrganizations = new ArrayList<>();
 
-        int loop = 0;
-        var onePage = getOrganizationsResource(realmName).list(0, pageSize);
-        while (onePage.size() == pageSize) {
-            loop++;
-            allOrganizations.addAll(onePage);
-            onePage = getOrganizationsResource(realmName).list(pageSize * loop, pageSize);
+        int offset = 0;
+        List<OrganizationRepresentation> page;
+
+        while (!(page = getOrganizationsResource(realmName).list(offset, pageSize)).isEmpty()) {
+            allOrganizations.addAll(page);
+            offset += page.size();
         }
-        allOrganizations.addAll(onePage);
 
         return allOrganizations;
     }
