@@ -33,24 +33,6 @@ jobs:
       fail-fast: false
       matrix:
         env:
-          - KEYCLOAK_VERSION: 21.1.2
-            KEYCLOAK_CLIENT_VERSION: 21.1.2
-          - KEYCLOAK_VERSION: 22.0.4
-            KEYCLOAK_CLIENT_VERSION: 22.0.4
-          - KEYCLOAK_VERSION: 23.0.7
-            KEYCLOAK_CLIENT_VERSION: 23.0.7
-          - KEYCLOAK_VERSION: 24.0.5
-            KEYCLOAK_CLIENT_VERSION: 24.0.5
-          - KEYCLOAK_VERSION: 25.0.1
-            KEYCLOAK_CLIENT_VERSION: 25.0.1
-          - KEYCLOAK_VERSION: 26.0.5
-            KEYCLOAK_CLIENT_VERSION: 26.0.2
-          - KEYCLOAK_VERSION: 26.1.0
-            KEYCLOAK_CLIENT_VERSION: 26.0.4
-          - KEYCLOAK_VERSION: 26.5.5
-            KEYCLOAK_CLIENT_VERSION: 26.0.8
-          - KEYCLOAK_VERSION: 26.6.2
-            KEYCLOAK_CLIENT_VERSION: 26.0.8
           - KEYCLOAK_VERSION: 26.7.4
             KEYCLOAK_CLIENT_VERSION: 26.0.12
     steps:
@@ -70,39 +52,8 @@ jobs:
           key: ${{ runner.os }}-maven-${{ matrix.env.KEYCLOAK_VERSION }}-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven-${{ matrix.env.KEYCLOAK_VERSION }}
 
-      # These steps overwrite COMPATIBILITY_PROFILE; the last matching one wins, so the broadest
-      # (highest) version threshold must come first and narrower thresholds override it below.
-      # A matrix entry that matches no step (Keycloak >= 26.7) builds with no compatibility
-      # profile, i.e. the full feature set. This is intentional: it makes a newer Keycloak entry
-      # fail loudly on a real incompatibility instead of silently dropping features.
-      - name: Adapt sources for Keycloak versions < 26.7.0 (skip passkey IT, server too old)
-        if: ${{ matrix.env.KEYCLOAK_VERSION < '26.7.0' }}
-        run: |
-          echo "COMPATIBILITY_PROFILE=-Ppre-keycloak26-7" >> $GITHUB_ENV
-
-      - name: Adapt sources for Keycloak versions < 26.4.0
-        if: ${{ matrix.env.KEYCLOAK_VERSION < '26.4.0' }}
-        run: |
-          echo "COMPATIBILITY_PROFILE=-Ppre-keycloak26-4" >> $GITHUB_ENV
-
-      - name: Adapt sources for Keycloak versions < 26.0.0
-        if: ${{ matrix.env.KEYCLOAK_VERSION < '26.0.0' }}
-        run: |
-          echo "COMPATIBILITY_PROFILE=-Ppre-keycloak26" >> $GITHUB_ENV
-
-      - name: Adapt sources for Keycloak versions < 23.0.0
-        if: ${{ matrix.env.KEYCLOAK_VERSION < '23.0.0' }}
-        run: |
-          echo "COMPATIBILITY_PROFILE=-Ppre-keycloak23" >> $GITHUB_ENV
-
-      - name: Adapt sources for Keycloak versions < 22.0.0 (jakarta -> javax)
-        if: ${{ matrix.env.KEYCLOAK_VERSION < '22.0.0' }}
-        run: |
-          echo "COMPATIBILITY_PROFILE=-Ppre-keycloak22" >> $GITHUB_ENV
-          echo "ADJUSTED_RESTEASY_VERSION=-Dresteasy.version=4.7.7.Final" >> $GITHUB_ENV
-
       - name: Build & Test
-        run: ./mvnw ${MAVEN_CLI_OPTS} -Dkeycloak.version=${{ matrix.env.KEYCLOAK_VERSION }} -Dkeycloak.client.version=${{ matrix.env.KEYCLOAK_CLIENT_VERSION }} ${ADJUSTED_RESTEASY_VERSION} clean verify -Pcoverage ${COMPATIBILITY_PROFILE}
+        run: ./mvnw ${MAVEN_CLI_OPTS} -Dkeycloak.version=${{ matrix.env.KEYCLOAK_VERSION }} -Dkeycloak.client.version=${{ matrix.env.KEYCLOAK_CLIENT_VERSION }} clean verify -Pcoverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7.1.1
@@ -171,7 +122,7 @@ jobs:
           build-args: |-
             KEYCLOAK_VERSION=${{ matrix.env.KEYCLOAK_VERSION }}
             KEYCLOAK_CLIENT_VERSION=${{ matrix.env.KEYCLOAK_CLIENT_VERSION }}
-            MAVEN_CLI_OPTS=${{ env.MAVEN_CLI_OPTS }} ${{ env.ADJUSTED_RESTEASY_VERSION }} ${{ env.COMPATIBILITY_PROFILE }}
+            MAVEN_CLI_OPTS=${{ env.MAVEN_CLI_OPTS }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           context: .
